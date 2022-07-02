@@ -39,6 +39,6 @@ mongoose
   .connect(`mongodb+srv://${DB_USER}:${DB_PASSWORD}@apicluster.nuhx3j5.mongodb.net/?retryWrites=true&w=majority`)
   .then(() => {
     console.log('conectamos ao MongoDB')
-    app.listen(3000)
+    app.listen(process.env.port || 3000)
   })
   .catch((err) => console.log(err))
