@@ -1,4 +1,5 @@
 require('dotenv').config()
+const bodyParser = require("body-parser");
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors')
@@ -9,11 +10,17 @@ const app = express()
 app.use(cors());
 
 app.use(express.urlencoded({
-  extended: true,
+  extended: false,
 })
 )
 
-app.use('/upload', express.static('uploads'));
+app.set('view engine', 'ejs')
+
+app.use(bodyParser.urlencoded(
+  { extended: true }
+))
+
+app.use('/uploads', express.static('uploads'));
 
 app.use(express.json());
 
@@ -26,6 +33,9 @@ app.use('/product', ProductRoutes)
 
 const ContactRoutes = require('./routes/contactRouter')
 app.use('/contact', ContactRoutes)
+
+const Image = require('./routes/imageRouter')
+app.use('/image', Image)
 
 // Rota inicial / Endpoint
 

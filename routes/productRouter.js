@@ -1,16 +1,15 @@
 const router = require('express').Router()
-
+const path = require('path');
 const Product = require('../models/Product')
 const multer = require('multer');
 
-const multerConfig = require('../config/multer')
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads');
+    cb(null, './uploads');
   },
   filename: function (req, file, cb) {
-    cb(null, new Date().toISOString() + file.originalname);
+    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
   }
 })
 
@@ -31,61 +30,81 @@ const upload = multer({
 })
 
 // Create - Criação produto
-router.post('/', upload.single('produto_imagem'), async (req, res) => {
+router.post('/', upload.single('imageProduct'), async (req, res) => {
   console.log(req.file)
-  // req.body
+
+
   const {
-    nameProduto,
-    dataAnoNumero,
+    marca,
+    modelo,
+    categoria,
     lanceInicial,
-    ano,
-    transmissao,
-    quilometragem,
-    tipoDocumento,
-    cor,
-    blindado,
+    versao,
+    anoDeFabricacao,
+    anoModelo,
+    fipe,
     combustivel,
-    tipoDeMonta,
-    condicao,
-    valorTabelaFipe,
-    possuiChave,
-    tipoChassi,
+    cor,
+    sinistro,
+    chaves,
+    km,
+    ipva,
+    DpvatLicenciamento,
+    CrlvCrv,
+    conservacao,
+    motorCambio,
+    veiculoEstado,
+    dataFinal,
+    name,
+    lance,
 
   } = req.body
 
-  const { originalname: nameImage, size, filename: key, path: url } = req.file
+  const { path: imageProduct } = req.file
 
+  const imagemProdutoteste = {
+    imageProduct
+  }
 
-  const data = [{
-    nameProduto,
-    dataAnoNumero,
+  const product = {
+    marca,
+    modelo,
+    categoria,
     lanceInicial,
-    ano,
-    transmissao,
-    quilometragem,
-    tipoDocumento,
-    cor,
-    blindado,
+    versao,
+    anoDeFabricacao,
+    anoModelo,
+    fipe,
     combustivel,
-    tipoDeMonta,
-    condicao,
-    valorTabelaFipe,
-    possuiChave,
-    tipoChassi,
-    nameImage,
-    size,
-    key,
-    url
-  }]
-  console.log(data)
+    cor,
+    sinistro,
+    chaves,
+    km,
+    ipva,
+    DpvatLicenciamento,
+    CrlvCrv,
+    conservacao,
+    motorCambio,
+    veiculoEstado,
+    dataFinal,
+    name,
+    lance,
+    imageProduct
+
+  }
+
+
+
+  console.log('Produto cadastrado: ', product)
 
   try {
     // Criando dados
-    await Product.create(data)
+    await Product.create(product)
     res.status(201).json({ message: 'Produto inserido com sucesso!' })
 
   } catch (error) {
     res.status(500).json({ error: error })
+    console.log('esse e erro: ', error)
   }
 })
 

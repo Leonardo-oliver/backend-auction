@@ -1,29 +1,29 @@
 const mongoose = require('mongoose');
 
 const Product = mongoose.model('Product', {
-  nameProduto: String,
-  dataAnoNumero: String,
+  marca: String,
+  modelo: String,
+  categoria: String,
   lanceInicial: Number,
-  ano: String,
-  transmissao: String,
-  quilometragem: String,
-  tipoDocumento: String,
-  cor: String,
-  blindado: String,
+  versao: String,
+  anoDeFabricacao: String,
+  anoModelo: Number,
+  fipe: Number,
   combustivel: String,
-  tipoDeMonta: String,
-  condicao: String,
-  valorTabelaFipe: Number,
-  possuiChave: String,
-  tipoChassi: String,
-  nameImage: String,
-  size: String,
-  key: String,
-  url: String,
-  createdAt: {
-    type: Date,
-    dafault: Date.now
-  }
+  cor: String,
+  chaves: String,
+  sinistro: String,
+  km: Number,
+  ipva: String,
+  DpvatLicenciamento: String,
+  CrlvCrv: String,
+  conservacao: String,
+  motorCambio: String,
+  veiculoEstado: String,
+  dataFinal: String,
+  name: String,
+  lance: Number,
+  imageProduct: Array
 })
 
 module.exports = Product
