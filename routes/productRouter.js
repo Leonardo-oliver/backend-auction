@@ -62,9 +62,6 @@ router.post('/', upload.single('imageProduct'), async (req, res) => {
 
   const { path: imageProduct } = req.file
 
-  const imagemProdutoteste = {
-    imageProduct
-  }
 
   const product = {
     marca,
@@ -90,10 +87,7 @@ router.post('/', upload.single('imageProduct'), async (req, res) => {
     name,
     lance,
     imageProduct
-
   }
-
-
 
   console.log('Produto cadastrado: ', product)
 
