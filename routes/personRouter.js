@@ -8,7 +8,7 @@ const Person = require('../models/Person')
 // Create - Criação
 router.post('/', async (req, res) => {
   // req.body
-  const { name, email, phone, password, confirmPassword, } = req.body
+  const { name, email, cpf, phone, password, confirmPassword, } = req.body
 
   if (!name) {
     res.status(422).json({ error: 'o nome é obrigatório' })
@@ -44,6 +44,7 @@ router.post('/', async (req, res) => {
   const person = {
     name,
     email,
+    cpf,
     phone,
     password: passwordHash
   }
@@ -172,11 +173,12 @@ router.patch('/:id', async (req, res) => {
 
   const id = req.params.id
 
-  const { name, email, phone, password, confirmPassword, } = req.body
+  const { name, email, cpf, phone, password, confirmPassword, } = req.body
 
   const person = {
     name,
     email,
+    cpf,
     phone,
     password,
     confirmPassword,

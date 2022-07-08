@@ -33,7 +33,6 @@ const upload = multer({
 router.post('/', upload.single('imageProduct'), async (req, res) => {
   console.log(req.file)
 
-
   const {
     marca,
     modelo,
@@ -140,23 +139,64 @@ router.patch('/:id', async (req, res) => {
 
   const id = req.params.id
 
-  const { name, email, telefone, senha } = req.body
-
-  const person = {
+  const {
+    marca,
+    modelo,
+    categoria,
+    lanceInicial,
+    versao,
+    anoDeFabricacao,
+    anoModelo,
+    fipe,
+    combustivel,
+    cor,
+    sinistro,
+    chaves,
+    km,
+    ipva,
+    DpvatLicenciamento,
+    CrlvCrv,
+    conservacao,
+    motorCambio,
+    veiculoEstado,
+    dataFinal,
     name,
-    email,
-    telefone,
-    senha
+    lance,
+  } = req.body
+
+  const product = {
+    marca,
+    modelo,
+    categoria,
+    lanceInicial,
+    versao,
+    anoDeFabricacao,
+    anoModelo,
+    fipe,
+    combustivel,
+    cor,
+    sinistro,
+    chaves,
+    km,
+    ipva,
+    DpvatLicenciamento,
+    CrlvCrv,
+    conservacao,
+    motorCambio,
+    veiculoEstado,
+    dataFinal,
+    name,
+    lance,
   }
   try {
 
-    const updatePerson = await Person.updateOne({ _id: id }, person)
+    const updateProduct = await Product.updateOne({ _id: id }, product)
 
-    if (updatePerson.matchedCount === 0) {
-      res.status(422).json({ message: 'O usuario não foi localizado!' })
+    if (updateProduct.matchedCount === 0) {
+      res.status(422).json({ message: 'Produto não foi localizado!' })
       return
     }
-    res.status(200).json(person)
+    res.status(200).json(product)
 
   } catch (error) {
     res.status(500).json({ error: error })
