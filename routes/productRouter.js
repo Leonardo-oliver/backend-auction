@@ -31,7 +31,6 @@ const upload = multer({
 
 // Create - Criação produto
 router.post('/', upload.single('imageProduct'), async (req, res) => {
-  console.log(req.file)
 
   const {
     marca,
@@ -58,6 +57,7 @@ router.post('/', upload.single('imageProduct'), async (req, res) => {
     lance,
 
   } = req.body
+
 
   const { path: imageProduct } = req.file
 
@@ -130,6 +130,76 @@ router.get('/:id', async (req, res) => {
   } catch (error) {
     res.status(500).json({ error: error })
     console.log('qual e o erro :', error)
+  }
+})
+
+// Update - Atualização (PUT, PATCH)
+
+router.post('/:id', async (req, res) => {
+
+  const id = req.params.id
+
+  const {
+    marca,
+    modelo,
+    categoria,
+    lanceInicial,
+    versao,
+    anoDeFabricacao,
+    anoModelo,
+    fipe,
+    combustivel,
+    cor,
+    sinistro,
+    chaves,
+    km,
+    ipva,
+    DpvatLicenciamento,
+    CrlvCrv,
+    conservacao,
+    motorCambio,
+    veiculoEstado,
+    dataFinal,
+    name,
+    lance,
+  } = req.body
+
+  const product = {
+    marca,
+    modelo,
+    categoria,
+    lanceInicial,
+    versao,
+    anoDeFabricacao,
+    anoModelo,
+    fipe,
+    combustivel,
+    cor,
+    sinistro,
+    chaves,
+    km,
+    ipva,
+    DpvatLicenciamento,
+    CrlvCrv,
+    conservacao,
+    motorCambio,
+    veiculoEstado,
+    dataFinal,
+    name,
+    lance,
+  }
+  try {
+
+    const updateProduct = await Product.updateOne({ _id: id }, product)
+
+    if (updateProduct.matchedCount === 0) {
+      res.status(422).json({ message: 'Produto não foi localizado!' })
+      return
+    }
+    res.status(200).json(product)
+
+  } catch (error) {
+    res.status(500).json({ error: error })
   }
 })
 
