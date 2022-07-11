@@ -42,12 +42,13 @@ router.post('/', async (req, res) => {
 
 
   const person = {
-    name,
-    email,
-    cpf,
-    phone,
+    name: passwordHash,
+    email: passwordHash,
+    cpf: passwordHash,
+    phone: passwordHash,
     password: passwordHash
   }
+
   try {
     // Criando dados
     await Person.create(person)
@@ -57,6 +58,7 @@ router.post('/', async (req, res) => {
     res.status(500).json({ error: error })
   }
 })
+
 
 // Private Route
 
@@ -128,7 +130,7 @@ router.post('/login', async (req, res, next) => {
       },
       secret,
     )
-    res.status(200).json({ msg: 'Autenticação realizada com sucesso', token })
+    res.status(200).json({ msg: 'Autenticação realizada com sucesso', token, user })
 
   } catch (err) {
     console.log(err)

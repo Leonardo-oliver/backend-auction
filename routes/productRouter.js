@@ -2,6 +2,7 @@ const router = require('express').Router()
 const path = require('path');
 const Product = require('../models/Product')
 const multer = require('multer');
+const util = require("util");
 
 
 const storage = multer.diskStorage({
@@ -27,78 +28,97 @@ const upload = multer({
     fileSize: 1024 * 1024 * 5
   },
   fileFilter: filter
-})
+}).array("imageProduct", 10)
+
+const uploadAsync = util.promisify(upload);
+
 
 // Create - Criação produto
-router.post('/', upload.single('imageProduct'), async (req, res) => {
+router.post('/', async (req, res) => {
 
-  const {
-    marca,
-    modelo,
-    categoria,
-    lanceInicial,
-    versao,
-    anoDeFabricacao,
-    anoModelo,
-    fipe,
-    combustivel,
-    cor,
-    sinistro,
-    chaves,
-    km,
-    ipva,
-    DpvatLicenciamento,
-    CrlvCrv,
-    conservacao,
-    motorCambio,
-    veiculoEstado,
-    dataFinal,
-    name,
-    lance,
-
-  } = req.body
-
-
-  const { path: imageProduct } = req.file
-
-
-  const product = {
-    marca,
-    modelo,
-    categoria,
-    lanceInicial,
-    versao,
-    anoDeFabricacao,
-    anoModelo,
-    fipe,
-    combustivel,
-    cor,
-    sinistro,
-    chaves,
-    km,
-    ipva,
-    DpvatLicenciamento,
-    CrlvCrv,
-    conservacao,
-    motorCambio,
-    veiculoEstado,
-    dataFinal,
-    name,
-    lance,
-    imageProduct
-  }
-
-  console.log('Produto cadastrado: ', product)
+  res.setHeader('Content-Type', 'application/json');
 
   try {
-    // Criando dados
-    await Product.create(product)
-    res.status(201).json({ message: 'Produto inserido com sucesso!' })
+    await uploadAsync(req, res);
+    console.log('items add', req.body)
 
+
+    // Criando dados
+    console.log('caminho image', req.files);
+    if (req.files.length <= 0) {
+      // console.log('caminho image', req.files.path);
+
+
+      return res.send({ success: `You must select at least 1 file.` });
+    }
+
+    const {
+      marca,
+      modelo,
+      categoria,
+      lanceInicial,
+      versao,
+      anoDeFabricacao,
+      anoModelo,
+      fipe,
+      combustivel,
+      cor,
+      sinistro,
+      chaves,
+      km,
+      ipva,
+      DpvatLicenciamento,
+      CrlvCrv,
+      conservacao,
+      motorCambio,
+      veiculoEstado,
+      dataFinal,
+      name,
+      lance,
+
+    } = req.body
+
+
+    const imageProduct = [req.files]
+    console.log('imagensssss: ', imageProduct)
+
+    const product = {
+      marca,
+      modelo,
+      categoria,
+      lanceInicial,
+      versao,
+      anoDeFabricacao,
+      anoModelo,
+      fipe,
+      combustivel,
+      cor,
+      sinistro,
+      chaves,
+      km,
+      ipva,
+      DpvatLicenciamento,
+      CrlvCrv,
+      conservacao,
+      motorCambio,
+      veiculoEstado,
+      dataFinal,
+      name,
+      lance,
+      imageProduct,
+    }
+
+    await Product.create(product)
+    // res.status(201).json({ message: 'Produto inserido com sucesso!' })
+    return res.send({ success: `Produto inserido com sucesso!` });
   } catch (error) {
-    res.status(500).json({ error: error })
-    console.log('esse e erro: ', error)
+    console.log(error);
+    if (error.code === "LIMIT_UNEXPECTED_FILE") {
+      return res.send({ error: "Too many files to upload." });
+    }
+    return res.send({ error: `Error when trying upload many files: ${error}` });
   }
+
 })
 
 // Read - Leitura de dados
@@ -278,17 +298,17 @@ router.patch('/:id', async (req, res) => {
 router.delete('/:id', async (req, res) => {
 
   const id = req.params.id
-  const person = await Person.findOne({ _id: id })
+  const product = await Product.findOne({ _id: id })
 
-  if (!person) {
-    res.status(422).json({ message: 'O usuario não foi localizado!' })
+  if (!product) {
+    res.status(422).json({ message: 'O carro não foi localizado!' })
     return
   }
 
   try {
 
-    await Person.deleteOne({ _id: id })
-    res.status(200).json({ message: 'Usuario removido com sucesso !' })
+    await Product.deleteOne({ _id: id })
+    res.status(200).json({ message: 'Carro excluido removido com sucesso !' })
     return
   } catch (error) {
     res.status(500).json({ error: error })
