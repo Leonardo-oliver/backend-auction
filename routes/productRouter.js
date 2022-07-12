@@ -42,16 +42,8 @@ router.post('/', async (req, res) => {
     await uploadAsync(req, res);
     console.log('items add', req.body)
 
-
     // Criando dados
     console.log('caminho image', req.files);
-    if (req.files.length <= 0) {
-      // console.log('caminho image', req.files.path);
-
-
-      return res.send({ success: `You must select at least 1 file.` });
-    }
-
     const {
       marca,
       modelo,
@@ -78,9 +70,15 @@ router.post('/', async (req, res) => {
 
     } = req.body
 
+    const imageProduct = []
+    let i
+    for (i = 0; i < req.files.length; i++) {
+      const { path: imageProductNew } = req.files[i]
+      console.log('imagensssss: ', imageProduct)
+      imageProduct.push(imageProductNew)
+    }
 
-    const imageProduct = [req.files]
-    console.log('imagensssss: ', imageProduct)
+
 
     const product = {
       marca,
@@ -105,10 +103,18 @@ router.post('/', async (req, res) => {
       dataFinal,
       name,
       lance,
-      imageProduct,
+      imageProduct
     }
 
     await Product.create(product)
+
+    if (req.files.length <= 0) {
+      // console.log('caminho image', req.files.path);
+
+      return res.send({ success: `You must select at least 1 file.` });
+    }
+
+
     // res.status(201).json({ message: 'Produto inserido com sucesso!' })
     return res.send({ success: `Produto inserido com sucesso!` });
   } catch (error) {
