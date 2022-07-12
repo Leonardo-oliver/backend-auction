@@ -42,10 +42,10 @@ router.post('/', async (req, res) => {
 
 
   const person = {
-    name: passwordHash,
-    email: passwordHash,
-    cpf: passwordHash,
-    phone: passwordHash,
+    name,
+    email,
+    cpf,
+    phone,
     password: passwordHash
   }
 

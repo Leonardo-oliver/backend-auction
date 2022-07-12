@@ -29,28 +29,34 @@ router.get('/', async (req, res) => {
   res.send('enviou')
 })
 
-// req.body
-//  const { name, email, phone, subject, description } = req.body
 
-//  if (!name) {
-//    res.status(422).json({ error: 'o nome é obrigatório' })
-//    return
-//  }
+router.post('/', async (req, res) => {
 
-//  const contact = {
-//    name,
-//    email,
-//    phone,
-//    subject,
-//    description
-//  }
-//  try {
-//    // Criando dados
-//    await Contact.create(contact)
-//    res.status(201).json({ message: 'Email enviado com sucesso!' })
+  const {
+    name,
+    email,
+    phone,
+    subject,
+    description
+  } = req.body
 
-//  } catch (error) {
-//    res.status(500).json({ error: error })
-//  }
+
+  const contact = {
+    name,
+    email,
+    phone,
+    subject,
+    description
+  }
+
+  try {
+    // Criando dados
+    await Contact.create(contact)
+    res.status(201).json({ message: 'Envio de contato com sucesso' })
+
+  } catch (error) {
+    res.status(500).json({ error: error })
+  }
+})
 
 module.exports = router
