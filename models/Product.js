@@ -21,9 +21,14 @@ const Product = mongoose.model('Product', {
   motorCambio: String,
   veiculoEstado: String,
   dataFinal: String,
-  name: Array,
-  lance: Array,
+  lances: [{
+    name: String,
+    lance: String,
+  }],
   imageProduct: Array
 })
 
+
+
 module.exports = Product
+

@@ -43,7 +43,7 @@ router.post('/', async (req, res) => {
     console.log('items add', req.body)
 
     // Criando dados
-    console.log('caminho image', req.files);
+    // console.log('caminho image', req.files);
     const {
       marca,
       modelo,
@@ -65,8 +65,7 @@ router.post('/', async (req, res) => {
       motorCambio,
       veiculoEstado,
       dataFinal,
-      name,
-      lance,
+      lances,
 
     } = req.body
 
@@ -77,8 +76,6 @@ router.post('/', async (req, res) => {
       console.log('imagensssss: ', imageProduct)
       imageProduct.push(imageProductNew)
     }
-
-
 
     const product = {
       marca,
@@ -101,8 +98,7 @@ router.post('/', async (req, res) => {
       motorCambio,
       veiculoEstado,
       dataFinal,
-      name,
-      lance,
+      lances,
       imageProduct
     }
 
@@ -127,6 +123,7 @@ router.post('/', async (req, res) => {
 
 })
 
+
 // Read - Leitura de dados
 
 router.get('/', async (req, res) => {
@@ -140,6 +137,8 @@ router.get('/', async (req, res) => {
   }
 
 })
+
+
 
 router.get('/:id', async (req, res) => {
   // extrair o dado da requisicao, pela url = req.params
@@ -159,74 +158,62 @@ router.get('/:id', async (req, res) => {
   }
 })
 
-// Update - Atualização (PUT, PATCH)
 
-router.post('/:id', async (req, res) => {
+// Create - Criação produto
+router.post('/teste/:id', async (req, res) => {
+  console.log('carregou', req.body)
 
   const id = req.params.id
 
   const {
-    marca,
-    modelo,
-    categoria,
-    lanceInicial,
-    versao,
-    anoDeFabricacao,
-    anoModelo,
-    fipe,
-    combustivel,
-    cor,
-    sinistro,
-    chaves,
-    km,
-    ipva,
-    DpvatLicenciamento,
-    CrlvCrv,
-    conservacao,
-    motorCambio,
-    veiculoEstado,
-    dataFinal,
     name,
     lance,
   } = req.body
 
-  const product = {
-    marca,
-    modelo,
-    categoria,
-    lanceInicial,
-    versao,
-    anoDeFabricacao,
-    anoModelo,
-    fipe,
-    combustivel,
-    cor,
-    sinistro,
-    chaves,
-    km,
-    ipva,
-    DpvatLicenciamento,
-    CrlvCrv,
-    conservacao,
-    motorCambio,
-    veiculoEstado,
-    dataFinal,
+  const lancesDoProduto = {
     name,
     lance,
   }
+
+  const product = await Product.findOne({ _id: id })
+  product.lances.push(lancesDoProduto)
+  const updateProduct = await Product.updateOne({ _id: id }, product)
+
+  if (updateProduct.matchedCount === 0) {
+    res.status(422).json({ message: 'Produto não foi localizado!' })
+    return
+  } else res.status(200).json(product)
+
+  console.log('produto carregado: ', product)
+
+})
+
+// Update - Atualização (PUT, PATCH)
+
+router.post('/lance/:id', async (req, res) => {
+
+  // const id = req.params.id
+  console.log('validar: ', req.body)
+
+
+
+  console.log('item cadastrado', lancesDoProduto)
+
+})
+
+//lances
+
+router.get('/lance/', async (req, res) => {
+  console.log('items adicionados ', req.body)
   try {
-
-    const updateProduct = await Product.updateOne({ _id: id }, product)
-
-    if (updateProduct.matchedCount === 0) {
-      res.status(422).json({ message: 'Produto não foi localizado!' })
-      return
-    }
-    res.status(200).json(product)
+    // mostrando dados
+    const product = await Product.find({ lances: lances })
+    res.status(201).json(product)
 
   } catch (error) {
     res.status(500).json({ error: error })
   }
+
 })
 
 // Update - Atualização (PUT, PATCH)

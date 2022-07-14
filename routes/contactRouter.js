@@ -30,33 +30,33 @@ router.get('/', async (req, res) => {
 })
 
 
-router.post('/', async (req, res) => {
+// router.post('/', async (req, res) => {
 
-  const {
-    name,
-    email,
-    phone,
-    subject,
-    description
-  } = req.body
+//   const {
+//     name,
+//     email,
+//     phone,
+//     subject,
+//     description
+//   } = req.body
 
 
-  const contact = {
-    name,
-    email,
-    phone,
-    subject,
-    description
-  }
+//   const contact = {
+//     name,
+//     email,
+//     phone,
+//     subject,
+//     description
+//   }
 
-  try {
-    // Criando dados
-    await Contact.create(contact)
-    res.status(201).json({ message: 'Envio de contato com sucesso' })
+//   try {
+//     // Criando dados
+//     await Contact.create(contact)
+//     res.status(201).json({ message: 'Envio de contato com sucesso' })
 
-  } catch (error) {
-    res.status(500).json({ error: error })
-  }
-})
+//   } catch (error) {
+//     res.status(500).json({ error: error })
+//   }
+// })
 
 module.exports = router
