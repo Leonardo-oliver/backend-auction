@@ -32,7 +32,6 @@ const upload = multer({
 
 const uploadAsync = util.promisify(upload);
 
-
 // Create - Criação produto
 router.post('/', async (req, res) => {
 
@@ -123,7 +122,6 @@ router.post('/', async (req, res) => {
 
 })
 
-
 // Read - Leitura de dados
 
 router.get('/', async (req, res) => {
@@ -137,7 +135,6 @@ router.get('/', async (req, res) => {
   }
 
 })
-
 
 
 router.get('/:id', async (req, res) => {
@@ -159,8 +156,8 @@ router.get('/:id', async (req, res) => {
 })
 
 
-// Create - Criação produto
-router.post('/teste/:id', async (req, res) => {
+// Create - Criação dos lances dos carros
+router.post('/lance/:id', async (req, res) => {
   console.log('carregou', req.body)
 
   const id = req.params.id
@@ -188,33 +185,7 @@ router.post('/teste/:id', async (req, res) => {
 
 })
 
-// Update - Atualização (PUT, PATCH)
 
-router.post('/lance/:id', async (req, res) => {
-
-  // const id = req.params.id
-  console.log('validar: ', req.body)
-
-
-
-  console.log('item cadastrado', lancesDoProduto)
-
-})
-
-//lances
-
-router.get('/lance/', async (req, res) => {
-  console.log('items adicionados ', req.body)
-  try {
-    // mostrando dados
-    const product = await Product.find({ lances: lances })
-    res.status(201).json(product)
-
-  } catch (error) {
-    res.status(500).json({ error: error })
-  }
-
-})
 
 // Update - Atualização (PUT, PATCH)
 
