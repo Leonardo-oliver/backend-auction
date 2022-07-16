@@ -60,15 +60,6 @@ router.post('/formulario-carros', async (req, res) => {
     `
   })
 
-  transporter.sendMail(message, function (error, info) {
-
-    if (error) {
-      return console.log(error);
-    }
-    console.log('Message sent: ' + info.response);
-  }
-  );
-
   res.send('enviou')
 
 })
@@ -86,7 +77,6 @@ router.post('/formulario-contato', async (req, res) => {
 
   const contact = {
     name,
-    lance,
     email,
     phone,
     subject,
