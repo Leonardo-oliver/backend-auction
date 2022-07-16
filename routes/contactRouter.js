@@ -3,6 +3,7 @@ const nodemailer = require('nodemailer');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const ejs = require("ejs")
+const Contact = require('../models/Contact')
 
 
 
@@ -122,6 +123,37 @@ router.post('/formulario-contato', async (req, res) => {
 
   res.send('enviou')
 
+})
+
+router.post('/', async (req, res) => {
+
+  console.log(req.body);
+  const {
+    name,
+    email,
+    phone,
+    subject,
+    description
+  } = req.body
+
+
+  const contact = {
+    name,
+    email,
+    phone,
+    subject,
+    description
+  }
+
+
+  try {
+    // Criando dados
+    await Contact.create(contact)
+    res.status(201).json({ message: 'Contato' })
+
+  } catch (error) {
+    res.status(500).json({ error: error })
+  }
 })
 
 module.exports = router
