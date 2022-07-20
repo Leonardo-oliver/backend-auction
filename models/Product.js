@@ -21,6 +21,7 @@ const Product = mongoose.model('Product', {
   motorCambio: String,
   veiculoEstado: String,
   dataFinal: String,
+  blindado: String,
   lances: [{
     name: String,
     lance: String,
