@@ -187,6 +187,34 @@ router.post('/lance/:id', async (req, res) => {
 
 })
 
+router.delete('/lance/:id', async (req, res) => {
+  console.log('carregou', req.body)
+
+  const id = req.params.id
+
+  const {
+    name,
+    lance,
+  } = req.body
+
+  const lancesDoProduto = {
+    name,
+    lance,
+  }
+
+  // const product = await Product.findOne({ _id: id })
+  // product.lances.push(lancesDoProduto)
+  const updateProduct = await Product.deleteOne({ _id: id }, product)
+
+  if (updateProduct.matchedCount === 0) {
+    res.status(422).json({ message: 'Produto não foi localizado!' })
+    return
+  } else res.status(200).json(product)
+
+  console.log('produto carregado: ', product)
+
+})
+
 
 
 // Update - Atualização (PUT, PATCH)
