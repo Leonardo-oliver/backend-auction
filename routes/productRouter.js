@@ -1,9 +1,31 @@
+require('dotenv').config()
 const router = require('express').Router()
 const path = require('path');
 const Product = require('../models/Product')
 const multer = require('multer');
 const util = require("util");
+const multerS3 = require('multer-s3');
+const aws = require("aws-sdk");
 
+const storageType = {
+  local: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+  }),
+  s3: multerS3({
+    s3: new aws.S3(),
+    bucket: 'upload-cars',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: 'public-read',
+    key: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+  })
+}
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
@@ -23,7 +45,7 @@ const filter = (req, file, cb) => {
 }
 
 const upload = multer({
-  storage: storage,
+  storage: storageType['s3'],
   limits: {
     fileSize: 1024 * 1024 * 5
   },
@@ -72,7 +94,7 @@ router.post('/', async (req, res) => {
     const imageProduct = []
     let i
     for (i = 0; i < req.files.length; i++) {
-      const { path: imageProductNew } = req.files[i]
+      const { location: imageProductNew } = req.files[i]
       console.log('imagensssss: ', imageProduct)
       imageProduct.push(imageProductNew)
     }

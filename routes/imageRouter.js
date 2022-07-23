@@ -6,7 +6,31 @@ const multer = require("multer");
 
 const Image = require('../models/Image')
 
+const multerS3 = require('multer-s3');
+const aws = require("aws-sdk");
+
 // router.set("view engine", "ejs");
+
+
+const storageType = {
+  local: multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, './uploads');
+    },
+    filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+  }),
+  s3: multerS3({
+    s3: new aws.S3(),
+    bucket: 'upload-cars',
+    contentType: multerS3.AUTO_CONTENT_TYPE,
+    acl: 'public-read',
+    key: (req, file, cb) => {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+    }
+  })
+}
 
 
 const storage = multer.diskStorage({
@@ -27,7 +51,7 @@ const filter = (req, file, cb) => {
 }
 
 const upload = multer({
-  storage: storage,
+  storage: storageType['s3'],
   limits: {
     fileSize: 1024 * 1024 * 5
   },
@@ -40,7 +64,7 @@ router.post('/', upload.single('imageProduct'), async function (req, res) {
 
   console.log(req.file)
 
-  const { originalname: name, fieldname: desc, path: imageProduct } = req.file
+  const { originalname: name, fieldname: desc, location: imageProduct } = req.file
 
 
   const image = {
