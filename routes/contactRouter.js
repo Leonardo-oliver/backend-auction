@@ -30,11 +30,11 @@ router.post('/formulario-carros', async (req, res) => {
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: "53e65a9c4aa3b0",
-      pass: "96bbaa17be5acb"
+      user: "07599203f7c2f3",
+      pass: "c79742c53c3a7d"
     }
-
   });
+
 
   // configuracao email
 
@@ -90,10 +90,11 @@ router.post('/formulario-contato', async (req, res) => {
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: "53e65a9c4aa3b0",
-      pass: "96bbaa17be5acb"
+      user: "07599203f7c2f3",
+      pass: "c79742c53c3a7d"
     }
   });
+
 
   // configuracao email
 
