@@ -116,7 +116,7 @@ router.post('/formulario-contato', async (req, res) => {
         <label>Lance: ${contact.email}</label>,<br> 
         <label>E-mail: ${contact.phone}</label>,<br> 
         <label>Telefone: ${contact.subject}</label>,<br> 
-        <label>Telefone: ${contact.description}</label>,<br> 
+        <label>Mensagem: ${contact.description}</label>,<br> 
       </article>
     
     `
