@@ -24,6 +24,8 @@ router.post('/formulario-carros', async (req, res) => {
     phone,
   }
 
+  console.log('teste de envio de lances: ', contact)
+
   // transport
 
   var transport = nodemailer.createTransport({
@@ -71,8 +73,7 @@ router.post('/formulario-contato', async (req, res) => {
     name,
     email,
     phone,
-    subject,
-    description
+    cpf,
   } = req.body
 
 
@@ -80,8 +81,7 @@ router.post('/formulario-contato', async (req, res) => {
     name,
     email,
     phone,
-    subject,
-    description
+    cpf,
   }
 
   // transport
@@ -113,10 +113,9 @@ router.post('/formulario-contato', async (req, res) => {
 
       <article>
         <label>Nome: ${contact.name}</label> ,<br> 
-        <label>Lance: ${contact.email}</label>,<br> 
-        <label>E-mail: ${contact.phone}</label>,<br> 
-        <label>Telefone: ${contact.subject}</label>,<br> 
-        <label>Mensagem: ${contact.description}</label>,<br> 
+        <label>E-mail: ${contact.email}</label>,<br> 
+        <label>Telefone: ${contact.phone}</label>,<br> 
+        <label>CPF: ${contact.cpf}</label>,<br> 
       </article>
     
     `
