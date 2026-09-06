@@ -24,17 +24,19 @@ router.post('/formulario-carros', async (req, res) => {
     phone,
   }
 
+  console.log('teste de envio de lances: ', contact)
+
   // transport
 
   var transport = nodemailer.createTransport({
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: "53e65a9c4aa3b0",
-      pass: "96bbaa17be5acb"
+      user: "07599203f7c2f3",
+      pass: "c79742c53c3a7d"
     }
-
   });
+
 
   // configuracao email
 
@@ -71,8 +73,7 @@ router.post('/formulario-contato', async (req, res) => {
     name,
     email,
     phone,
-    subject,
-    description
+    cpf,
   } = req.body
 
 
@@ -80,8 +81,7 @@ router.post('/formulario-contato', async (req, res) => {
     name,
     email,
     phone,
-    subject,
-    description
+    cpf,
   }
 
   // transport
@@ -90,10 +90,11 @@ router.post('/formulario-contato', async (req, res) => {
     host: "smtp.mailtrap.io",
     port: 2525,
     auth: {
-      user: "53e65a9c4aa3b0",
-      pass: "96bbaa17be5acb"
+      user: "07599203f7c2f3",
+      pass: "c79742c53c3a7d"
     }
   });
+
 
   // configuracao email
 
@@ -112,10 +113,9 @@ router.post('/formulario-contato', async (req, res) => {
 
       <article>
         <label>Nome: ${contact.name}</label> ,<br> 
-        <label>Lance: ${contact.email}</label>,<br> 
-        <label>E-mail: ${contact.phone}</label>,<br> 
-        <label>Telefone: ${contact.subject}</label>,<br> 
-        <label>Telefone: ${contact.description}</label>,<br> 
+        <label>E-mail: ${contact.email}</label>,<br> 
+        <label>Telefone: ${contact.phone}</label>,<br> 
+        <label>CPF: ${contact.cpf}</label>,<br> 
       </article>
     
     `
